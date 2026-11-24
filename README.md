@@ -6,7 +6,8 @@ everywhere when it sells anywhere.
 
 ## Safety rules built in
 
-- eBay listings are saved as **drafts only** until `NELLY_PUBLISH=true`.
+- eBay and Etsy listings are saved as **drafts only** until `NELLY_PUBLISH=true`.
+- Etsy is built first while eBay developer access is being fixed.
 - Each item gets its own id `NN-<Shopify product number>`. The Shopify SKU
   field holds the shelf spot (for example `03 BIN 18`) and repeats, so it is
   kept as `shelf_spot`, not used as the id.
@@ -24,6 +25,10 @@ everywhere when it sells anywhere.
 | `EBAY_CLIENT_SECRET` | eBay Production Cert ID |
 | `EBAY_RU_NAME` | eBay RuName for the sign-in link |
 | `EBAY_REFRESH_TOKEN` | saved once after Diane signs in to eBay |
+| `ETSY_KEYSTRING` | Etsy app Keystring |
+| `ETSY_SHARED_SECRET` | Etsy app Shared secret |
+| `ETSY_REFRESH_TOKEN` | saved once after the shop owner signs in to Etsy |
+| `ETSY_SHIPPING_PROFILE_ID` | Etsy shipping profile to use |
 | `NELLY_PUBLISH` | `true` to let NELLY make listings live (default `false`) |
 
 ## Commands

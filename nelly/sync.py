@@ -14,6 +14,7 @@ class Listing:
     nelly_sku: str
     ebay_offer_id: str | None = None
     shopify_product_id: str | None = None
+    etsy_listing_id: int | None = None
     sold_on: str | None = None
 
 
@@ -43,6 +44,8 @@ def plan_takedowns(sold: dict[str, str], listings: dict[str, Listing]) -> list[t
             continue
         if site != "ebay" and lst.ebay_offer_id:
             actions.append(("ebay", sku))
+        if site != "etsy" and lst.etsy_listing_id:
+            actions.append(("etsy", sku))
         if site != "shopify" and lst.shopify_product_id:
             actions.append(("shopify", sku))
     return actions

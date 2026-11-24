@@ -22,6 +22,14 @@ class Config:
     ebay_marketplace: str
     ebay_location_key: str      # NELLY's ship-from location on eBay
 
+    # Etsy
+    etsy_keystring: str         # Etsy app "Keystring"
+    etsy_shared_secret: str     # Etsy app "Shared secret"
+    etsy_redirect_uri: str      # callback set on the Etsy app
+    etsy_refresh_token: str     # saved after the shop owner signs in once
+    etsy_shop_id: str
+    etsy_shipping_profile_id: str
+
     # House rules
     default_cogs: float         # cost used when an item has no known cost
     publish_enabled: bool       # False = make eBay drafts only, never go live
@@ -39,6 +47,12 @@ class Config:
             ebay_refresh_token=e("EBAY_REFRESH_TOKEN", ""),
             ebay_marketplace=e("EBAY_MARKETPLACE", "EBAY_US"),
             ebay_location_key=e("EBAY_LOCATION_KEY", "nelly-sarasota"),
+            etsy_keystring=e("ETSY_KEYSTRING", ""),
+            etsy_shared_secret=e("ETSY_SHARED_SECRET", ""),
+            etsy_redirect_uri=e("ETSY_REDIRECT_URI", "https://localhost/nelly-etsy"),
+            etsy_refresh_token=e("ETSY_REFRESH_TOKEN", ""),
+            etsy_shop_id=e("ETSY_SHOP_ID", ""),
+            etsy_shipping_profile_id=e("ETSY_SHIPPING_PROFILE_ID", ""),
             default_cogs=float(e("NELLY_DEFAULT_COGS", "1.00")),
             publish_enabled=e("NELLY_PUBLISH", "false").lower() == "true",
         )
