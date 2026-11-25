@@ -29,6 +29,7 @@ class Config:
     etsy_refresh_token: str     # saved after the shop owner signs in once
     etsy_shop_id: str
     etsy_shipping_profile_id: str
+    etsy_readiness_state_id: str
 
     # House rules
     default_cogs: float         # cost used when an item has no known cost
@@ -53,6 +54,7 @@ class Config:
             etsy_refresh_token=e("ETSY_REFRESH_TOKEN", ""),
             etsy_shop_id=e("ETSY_SHOP_ID", ""),
             etsy_shipping_profile_id=e("ETSY_SHIPPING_PROFILE_ID", ""),
+            etsy_readiness_state_id=e("ETSY_READINESS_STATE_ID", ""),
             default_cogs=float(e("NELLY_DEFAULT_COGS", "1.00")),
             publish_enabled=e("NELLY_PUBLISH", "false").lower() == "true",
         )

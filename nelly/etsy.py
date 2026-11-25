@@ -109,12 +109,30 @@ def listing_body(item: Item, cfg: Config, taxonomy_id: int) -> dict:
         "tags": clean_tags(item.tags),
         "should_auto_renew": False,
     }
+    if cfg.etsy_readiness_state_id:
+        body["readiness_state_id"] = int(cfg.etsy_readiness_state_id)
     if cfg.etsy_shipping_profile_id:
         body["shipping_profile_id"] = int(cfg.etsy_shipping_profile_id)
     if item.weight_lb:
         body["item_weight"] = round(item.weight_lb, 2)
         body["item_weight_unit"] = "lb"
+        # Etsy's calculated shipping needs box size. Until the box list is in
+        # NELLY, use a standard box by weight.
+        length, width, height = box_for(item.weight_lb)
+        body.update(item_length=length, item_width=width, item_height=height,
+                    item_dimensions_unit="in")
     return body
+
+
+def box_for(weight_lb: float) -> tuple[int, int, int]:
+    """Standard box (inches) by packed weight."""
+    if weight_lb <= 1:
+        return (9, 6, 3)
+    if weight_lb <= 3:
+        return (12, 9, 4)
+    if weight_lb <= 10:
+        return (14, 12, 8)
+    return (18, 14, 12)
 
 
 # ---------- API client ----------
@@ -162,11 +180,20 @@ class Etsy:
     def shipping_profiles(self) -> list[dict]:
         return self._call("GET", f"/shops/{self.shop_id()}/shipping-profiles").get("results", [])
 
+    def ready_to_ship_id(self) -> int:
+        """Etsy needs a 'ready to ship' processing time on physical items."""
+        data = self._call("GET", f"/shops/{self.shop_id()}/readiness-state-definitions")
+        for r in data.get("results", []):
+            if r.get("readiness_state") == "ready_to_ship":
+                return r["readiness_state_id"]
+        raise EtsyError("No 'ready to ship' processing time set up in the Etsy shop.")
+
     def save_draft(self, item: Item, taxonomy_id: int) -> dict:
         """Make a draft listing and add up to 10 photos. Not live."""
         shop = self.shop_id()
-        listing = self._call("POST", f"/shops/{shop}/listings",
-                             data=listing_body(item, self.cfg, taxonomy_id))
+        body = listing_body(item, self.cfg, taxonomy_id)
+        body.setdefault("readiness_state_id", self.ready_to_ship_id())
+        listing = self._call("POST", f"/shops/{shop}/listings", data=body)
         lid = listing["listing_id"]
         for rank, url in enumerate(item.image_urls[:10], start=1):
             img = self.http.get(url, timeout=60)
