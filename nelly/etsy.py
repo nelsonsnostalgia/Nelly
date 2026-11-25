@@ -146,7 +146,9 @@ class Etsy:
         return body["access_token"]
 
     def _call(self, method: str, path: str, *, auth: bool = True, **kw):
-        headers = {"x-api-key": self.api_key()}
+        # If the shared secret is not in our settings, the network secret
+        # adds the x-api-key header for us.
+        headers = {"x-api-key": self.api_key()} if self.cfg.etsy_shared_secret else {}
         if auth:
             headers["Authorization"] = f"Bearer {self.user_token()}"
         r = self.http.request(method, API + path, headers=headers, timeout=60, **kw)
