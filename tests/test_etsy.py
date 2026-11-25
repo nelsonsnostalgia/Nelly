@@ -26,7 +26,8 @@ def test_tags():
 def test_listing_body():
     item = item_from_node(NODE, 1.0)
     b = listing_body(item, cfg(etsy_shipping_profile_id="77"), 1234)
-    assert b["sku"] == "NN-15501902545030" and b["price"] == 24.95
+    assert b["price"] == 24.95 and b["tags"] == "vintage jewelry"
+    assert (b["item_length"], b["item_dimensions_unit"]) == (9, "in")
     assert b["who_made"] == "someone_else" and b["shipping_profile_id"] == 77
     assert "<" not in b["description"]
 

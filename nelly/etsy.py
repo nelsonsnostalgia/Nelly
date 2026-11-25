@@ -105,8 +105,7 @@ def listing_body(item: Item, cfg: Config, taxonomy_id: int) -> dict:
         "when_made": "before_2007",   # Etsy vintage = 20+ years old
         "taxonomy_id": taxonomy_id,
         "type": "physical",
-        "sku": item.nelly_sku,
-        "tags": clean_tags(item.tags),
+        "tags": ",".join(clean_tags(item.tags)),  # Etsy wants one comma list
         "should_auto_renew": False,
     }
     if cfg.etsy_readiness_state_id:
@@ -195,6 +194,7 @@ class Etsy:
         body.setdefault("readiness_state_id", self.ready_to_ship_id())
         listing = self._call("POST", f"/shops/{shop}/listings", data=body)
         lid = listing["listing_id"]
+        self.set_sku(lid, item.nelly_sku)
         for rank, url in enumerate(item.image_urls[:10], start=1):
             img = self.http.get(url, timeout=60)
             img.raise_for_status()
@@ -202,6 +202,19 @@ class Etsy:
                        files={"image": (f"{item.nelly_sku}-{rank}.jpg", img.content)},
                        data={"rank": rank})
         return {"sku": item.nelly_sku, "listingId": lid, "state": listing.get("state")}
+
+    def set_sku(self, listing_id: int, sku: str) -> None:
+        """Etsy keeps the SKU on the listing's inventory, not the listing."""
+        inv = self._call("GET", f"/listings/{listing_id}/inventory")
+        products = []
+        for p in inv["products"]:
+            products.append({"sku": sku, "property_values": p.get("property_values", []),
+                             "offerings": [{
+                                 "price": o["price"]["amount"] / o["price"]["divisor"],
+                                 "quantity": o["quantity"], "is_enabled": o["is_enabled"],
+                                 "readiness_state_id": o["readiness_state_id"],
+                             } for o in p["offerings"]]})
+        self._call("PUT", f"/listings/{listing_id}/inventory", json={"products": products})
 
     def set_state(self, listing_id: int, state: str) -> None:
         if state == "active" and not self.cfg.publish_enabled:
