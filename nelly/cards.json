@@ -1,0 +1,649 @@
+[
+ {
+  "id": "J-01",
+  "name": "Ring",
+  "keywords": [
+   "ring"
+  ],
+  "measurements": {
+   "A": "Ring size (on the sizer stick)",
+   "B": "Top, across the widest spot",
+   "C": "Band width at the back"
+  }
+ },
+ {
+  "id": "J-02",
+  "name": "Necklace or chain",
+  "keywords": [
+   "necklace",
+   "chain",
+   "choker",
+   "lariat"
+  ],
+  "measurements": {
+   "A": "Length, end to end",
+   "B": "Pendant, top of loop to bottom",
+   "C": "Pendant, across the widest spot",
+   "D": "Chain width"
+  }
+ },
+ {
+  "id": "J-03",
+  "name": "Bracelet or anklet with a clasp",
+  "keywords": [
+   "bracelet",
+   "anklet"
+  ],
+  "measurements": {
+   "A": "Length, end to end",
+   "B": "Width, widest spot",
+   "C": "Thickness"
+  }
+ },
+ {
+  "id": "J-04",
+  "name": "Bangle or cuff",
+  "keywords": [
+   "bangle",
+   "cuff"
+  ],
+  "measurements": {
+   "A": "Inside, on the cone",
+   "B": "Width of the band",
+   "C": "Thickness of the metal",
+   "D": "Cuff opening (cuffs only)"
+  }
+ },
+ {
+  "id": "J-05",
+  "name": "Pendant or charm",
+  "keywords": [
+   "pendant",
+   "charm",
+   "locket"
+  ],
+  "measurements": {
+   "A": "Height, top of loop to bottom",
+   "B": "Width, widest spot",
+   "C": "Thickness"
+  }
+ },
+ {
+  "id": "J-06",
+  "name": "Earrings (pair)",
+  "keywords": [
+   "earring",
+   "earrings"
+  ],
+  "measurements": {
+   "A": "Length, top to bottom",
+   "B": "Width, widest spot"
+  }
+ },
+ {
+  "id": "J-07",
+  "name": "Brooch or pin",
+  "keywords": [
+   "brooch",
+   "pin"
+  ],
+  "measurements": {
+   "A": "Width, side to side",
+   "B": "Height, top to bottom",
+   "C": "Depth, front to back"
+  }
+ },
+ {
+  "id": "J-08",
+  "name": "Watch",
+  "keywords": [
+   "watch",
+   "wristwatch"
+  ],
+  "measurements": {
+   "A": "Length, end to end, laid open",
+   "B": "Case, across (not the knob)",
+   "C": "Band width",
+   "D": "Case thickness"
+  }
+ },
+ {
+  "id": "A-01",
+  "name": "Belt",
+  "keywords": [
+   "belt"
+  ],
+  "measurements": {
+   "A": "Where the buckle joins, to the middle",
+   "B": "First hole to last hole",
+   "C": "Full length with buckle",
+   "D": "Strap width"
+  }
+ },
+ {
+  "id": "A-02",
+  "name": "Hat with a brim",
+  "keywords": [
+   "fedora",
+   "cowboy hat",
+   "sun hat",
+   "bucket hat",
+   "brim"
+  ],
+  "measurements": {
+   "A": "Around the inside band",
+   "B": "Brim, from hat to edge",
+   "C": "Crown height",
+   "D": "Across the whole brim"
+  }
+ },
+ {
+  "id": "A-03",
+  "name": "Cap or beanie",
+  "keywords": [
+   "cap",
+   "beanie",
+   "trucker hat",
+   "baseball hat"
+  ],
+  "measurements": {
+   "A": "Around the inside band",
+   "B": "Bill length",
+   "C": "Crown height"
+  }
+ },
+ {
+  "id": "A-04",
+  "name": "Bag",
+  "keywords": [
+   "bag",
+   "purse",
+   "handbag",
+   "tote",
+   "backpack",
+   "clutch",
+   "messenger"
+  ],
+  "measurements": {
+   "A": "Width, side to side",
+   "B": "Height, bottom to top of bag",
+   "C": "Depth, front to back",
+   "D": "Handle drop, top of bag to top of handle",
+   "E": "Long strap, end to end"
+  }
+ },
+ {
+  "id": "A-05",
+  "name": "Wallet",
+  "keywords": [
+   "wallet",
+   "billfold",
+   "coin purse"
+  ],
+  "measurements": {
+   "A": "Width, closed",
+   "B": "Height, closed",
+   "C": "Thickness, closed",
+   "D": "Width, open flat"
+  }
+ },
+ {
+  "id": "C-01",
+  "name": "Top: shirt, tee, sweater, jersey, tank",
+  "keywords": [
+   "shirt",
+   "tee",
+   "t-shirt",
+   "sweater",
+   "jersey",
+   "tank",
+   "blouse",
+   "top",
+   "hoodie",
+   "sweatshirt",
+   "polo"
+  ],
+  "measurements": {
+   "A": "Chest, armpit to armpit",
+   "B": "Shoulders, seam to seam",
+   "C": "Length, back of collar to bottom",
+   "D": "Sleeve, shoulder seam to cuff",
+   "E": "Sleeve opening (flat across)",
+   "F": "Waist (flat across)"
+  }
+ },
+ {
+  "id": "C-02",
+  "name": "Jacket, coat, blazer, cardigan, vest",
+  "keywords": [
+   "jacket",
+   "coat",
+   "blazer",
+   "cardigan",
+   "vest"
+  ],
+  "measurements": {
+   "A": "Chest, armpit to armpit",
+   "B": "Shoulders, seam to seam",
+   "C": "Length, back of collar to bottom",
+   "D": "Sleeve, shoulder seam to cuff",
+   "E": "Sleeve opening (flat across)",
+   "F": "Waist (flat across)"
+  }
+ },
+ {
+  "id": "C-03",
+  "name": "Pants, shorts, capris, leggings",
+  "keywords": [
+   "pants",
+   "shorts",
+   "capris",
+   "leggings",
+   "jeans",
+   "trousers",
+   "swim trunks"
+  ],
+  "measurements": {
+   "A": "Waist (flat across)",
+   "B": "Hips, widest spot (flat across)",
+   "C": "Rise, waist to crotch seam",
+   "D": "Thigh, just below the crotch (flat across)",
+   "E": "Inseam, crotch seam to bottom",
+   "F": "Outside length, waist to bottom"
+  }
+ },
+ {
+  "id": "C-04",
+  "name": "Skirt",
+  "keywords": [
+   "skirt"
+  ],
+  "measurements": {
+   "A": "Waist (flat across)",
+   "B": "Hips, widest spot (flat across)",
+   "C": "Length, waist to bottom",
+   "D": "Bottom hem (flat across)"
+  }
+ },
+ {
+  "id": "C-05",
+  "name": "Dress, any sleeve, any length",
+  "keywords": [
+   "dress"
+  ],
+  "measurements": {
+   "A": "Chest, armpit to armpit",
+   "B": "Waist, narrowest spot (flat across)",
+   "C": "Hips (flat across)",
+   "D": "Length, shoulder to bottom",
+   "E": "Sleeve, shoulder seam to cuff",
+   "F": "Sleeve opening (flat across)"
+  }
+ },
+ {
+  "id": "C-06",
+  "name": "One piece: jumpsuit, romper, overalls, coveralls",
+  "keywords": [
+   "jumpsuit",
+   "romper",
+   "overalls",
+   "coveralls"
+  ],
+  "measurements": {
+   "A": "Chest, armpit to armpit",
+   "B": "Waist (flat across)",
+   "C": "Hips (flat across)",
+   "D": "Inseam, crotch seam to bottom",
+   "E": "Full length, shoulder to bottom",
+   "F": "Leg opening (flat across)"
+  }
+ },
+ {
+  "id": "C-07",
+  "name": "Swimsuit and swim top",
+  "keywords": [
+   "swimsuit",
+   "bikini",
+   "tankini",
+   "swim top"
+  ],
+  "measurements": {
+   "A": "Chest (flat across)",
+   "B": "Waist (flat across)",
+   "C": "Length, top of strap to bottom",
+   "D": "Crotch width"
+  }
+ },
+ {
+  "id": "S-01",
+  "name": "Shoes: sneakers, dress shoes, flats, sandals, cleats",
+  "keywords": [
+   "shoes",
+   "sneakers",
+   "flats",
+   "sandals",
+   "cleats",
+   "loafers",
+   "slides"
+  ],
+  "measurements": {
+   "A": "Sole length, heel to toe",
+   "B": "Sole width, widest spot",
+   "C": "Heel height"
+  }
+ },
+ {
+  "id": "S-02",
+  "name": "Heels and wedges",
+  "keywords": [
+   "heels",
+   "wedges",
+   "pumps",
+   "stilettos"
+  ],
+  "measurements": {
+   "A": "Length, back of heel to toe",
+   "B": "Heel height, at the back",
+   "C": "Sole width, widest spot"
+  }
+ },
+ {
+  "id": "S-03",
+  "name": "Boots",
+  "keywords": [
+   "boots",
+   "boot"
+  ],
+  "measurements": {
+   "A": "Sole length, heel to toe",
+   "B": "Height, floor to top of boot",
+   "C": "Around the top opening"
+  }
+ },
+ {
+  "id": "H-01",
+  "name": "Mug or teacup",
+  "keywords": [
+   "mug",
+   "teacup",
+   "cup"
+  ],
+  "measurements": {
+   "A": "Height",
+   "B": "Top opening, across",
+   "C": "Width with the handle",
+   "D": "Base, across"
+  }
+ },
+ {
+  "id": "H-02",
+  "name": "Glass, tumbler or shot glass",
+  "keywords": [
+   "glass",
+   "tumbler",
+   "shot glass"
+  ],
+  "measurements": {
+   "A": "Height",
+   "B": "Top opening, across",
+   "C": "Base, across"
+  }
+ },
+ {
+  "id": "H-03",
+  "name": "Stemware: wine or champagne glass",
+  "keywords": [
+   "wine glass",
+   "champagne",
+   "stemware",
+   "goblet"
+  ],
+  "measurements": {
+   "A": "Height",
+   "B": "Top opening, across",
+   "C": "Foot, across"
+  }
+ },
+ {
+  "id": "H-04",
+  "name": "Bowl",
+  "keywords": [
+   "bowl"
+  ],
+  "measurements": {
+   "A": "Across the top",
+   "B": "Height",
+   "C": "Base, across"
+  }
+ },
+ {
+  "id": "H-05",
+  "name": "Plate, saucer or platter",
+  "keywords": [
+   "plate",
+   "saucer",
+   "platter"
+  ],
+  "measurements": {
+   "A": "Across, side to side",
+   "B": "Across the other way (if not round)",
+   "C": "Height"
+  }
+ },
+ {
+  "id": "H-06",
+  "name": "Vase",
+  "keywords": [
+   "vase"
+  ],
+  "measurements": {
+   "A": "Height",
+   "B": "Top opening, across",
+   "C": "Widest spot, across",
+   "D": "Base, across"
+  }
+ },
+ {
+  "id": "H-07",
+  "name": "Gravy boat, pitcher or teapot",
+  "keywords": [
+   "gravy boat",
+   "pitcher",
+   "teapot",
+   "creamer"
+  ],
+  "measurements": {
+   "A": "Height",
+   "B": "Tip of spout to outside of handle",
+   "C": "Width, front to back"
+  }
+ },
+ {
+  "id": "H-08",
+  "name": "Picture frame or wall mirror",
+  "keywords": [
+   "frame",
+   "mirror"
+  ],
+  "measurements": {
+   "A": "Outside width",
+   "B": "Outside height",
+   "C": "Opening width (photo or glass you see)",
+   "D": "Opening height",
+   "E": "Depth, front to back"
+  }
+ },
+ {
+  "id": "H-09",
+  "name": "Lamp",
+  "keywords": [
+   "lamp"
+  ],
+  "measurements": {
+   "A": "Full height",
+   "B": "Shade, across the bottom",
+   "C": "Shade height",
+   "D": "Base, across"
+  }
+ },
+ {
+  "id": "H-10",
+  "name": "Christmas stocking",
+  "keywords": [
+   "stocking"
+  ],
+  "measurements": {
+   "A": "Height, top to bottom of heel",
+   "B": "Heel to toe",
+   "C": "Across the top",
+   "D": "Cuff height"
+  }
+ },
+ {
+  "id": "H-11",
+  "name": "Rug, curtains, blanket, linens",
+  "keywords": [
+   "rug",
+   "curtain",
+   "curtains",
+   "blanket",
+   "quilt",
+   "tablecloth",
+   "linens",
+   "towel"
+  ],
+  "measurements": {
+   "A": "Width, side to side",
+   "B": "Length, top to bottom",
+   "C": "Rod pocket or top band (curtains)"
+  }
+ },
+ {
+  "id": "H-12",
+  "name": "Chair, stool, sofa",
+  "keywords": [
+   "chair",
+   "stool",
+   "sofa",
+   "loveseat",
+   "couch"
+  ],
+  "measurements": {
+   "A": "Width, widest spot",
+   "B": "Full height, floor to top",
+   "C": "Seat height, floor to seat",
+   "D": "Depth, front to back"
+  }
+ },
+ {
+  "id": "H-13",
+  "name": "Table",
+  "keywords": [
+   "table"
+  ],
+  "measurements": {
+   "A": "Top, the long way",
+   "B": "Height, floor to top",
+   "C": "Top, the short way"
+  }
+ },
+ {
+  "id": "T-01",
+  "name": "Figurine, action figure, Funko",
+  "keywords": [
+   "figurine",
+   "figure",
+   "funko"
+  ],
+  "measurements": {
+   "A": "Height",
+   "B": "Width, widest spot",
+   "C": "Depth, front to back"
+  }
+ },
+ {
+  "id": "T-02",
+  "name": "Doll",
+  "keywords": [
+   "doll"
+  ],
+  "measurements": {
+   "A": "Height, top of head to feet"
+  }
+ },
+ {
+  "id": "T-03",
+  "name": "Plush or stuffed animal",
+  "keywords": [
+   "plush",
+   "stuffed",
+   "teddy"
+  ],
+  "measurements": {
+   "A": "Height, top of head to bottom",
+   "B": "Width, widest spot"
+  }
+ },
+ {
+  "id": "M-01",
+  "name": "Book",
+  "keywords": [
+   "book",
+   "novel",
+   "hardcover",
+   "paperback"
+  ],
+  "measurements": {
+   "A": "Height",
+   "B": "Width",
+   "C": "Thickness"
+  }
+ },
+ {
+  "id": "E-01",
+  "name": "Electronics: console, speaker, laptop, keyboard",
+  "keywords": [
+   "console",
+   "speaker",
+   "laptop",
+   "keyboard",
+   "radio",
+   "camera"
+  ],
+  "measurements": {
+   "A": "Width, side to side",
+   "B": "Height",
+   "C": "Depth, front to back"
+  }
+ },
+ {
+  "id": "E-02",
+  "name": "TV or monitor",
+  "keywords": [
+   "tv",
+   "television",
+   "monitor"
+  ],
+  "measurements": {
+   "A": "Screen, corner to corner (glass only)",
+   "B": "Width, whole set",
+   "C": "Height with the stand"
+  }
+ },
+ {
+  "id": "G-01",
+  "name": "Sports gear: bat, golf club, hockey stick, racket",
+  "keywords": [
+   "bat",
+   "golf club",
+   "hockey stick",
+   "racket",
+   "racquet",
+   "putter"
+  ],
+  "measurements": {
+   "A": "Full length, end to end",
+   "B": "Widest spot"
+  }
+ }
+]

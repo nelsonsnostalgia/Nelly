@@ -16,6 +16,7 @@ import requests
 
 from .config import Config
 from .shopify import Item
+from . import words
 
 API = "https://api.ebay.com"
 AUTH = "https://auth.ebay.com/oauth2/authorize"
@@ -74,7 +75,7 @@ def exchange_code(cfg: Config, code: str, http: requests.Session | None = None) 
 
 def clean_title(title: str) -> str:
     """eBay titles max 80 characters; cut at a word break."""
-    t = re.sub(r"\s+", " ", title).strip()
+    t = re.sub(r"\s+", " ", words.clean(title)).strip()
     if len(t) <= TITLE_MAX:
         return t
     cut = t[:TITLE_MAX].rsplit(" ", 1)[0]
@@ -94,7 +95,7 @@ def inventory_item_body(item: Item) -> dict:
         "condition": "USED_EXCELLENT",
         "product": {
             "title": clean_title(item.title),
-            "description": item.description_html or item.title,
+            "description": words.clean(item.description_html or item.title),
             "imageUrls": item.image_urls[:24],
         },
     }
@@ -114,7 +115,7 @@ def offer_body(item: Item, cfg: Config, category_id: str, policies: dict) -> dic
         "format": "FIXED_PRICE",
         "availableQuantity": max(item.quantity, 0),
         "categoryId": category_id,
-        "listingDescription": item.description_html,
+        "listingDescription": words.clean(item.description_html),
         "listingPolicies": {
             "fulfillmentPolicyId": policies["fulfillment"],
             "paymentPolicyId": policies["payment"],
@@ -168,6 +169,8 @@ class Ebay:
                    "Content-Type": "application/json",
                    "Content-Language": "en-US",
                    "Accept-Language": "en-US"}
+        if method in ("POST", "PUT") and "json" in kw:
+            words.check(str(kw["json"]))
         r = self.http.request(method, API + path, headers=headers, timeout=60, **kw)
         if r.status_code not in ok:
             raise EbayError(f"{method} {path} -> {r.status_code}: {r.text[:500]}")

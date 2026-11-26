@@ -17,6 +17,8 @@ import requests
 from .config import Config
 from .ebay import plain_text
 from .shopify import Item
+from . import words
+from .cards import card_for, measurements_block
 
 API = "https://openapi.etsy.com/v3/application"
 CONNECT = "https://www.etsy.com/oauth/connect"
@@ -87,7 +89,9 @@ def clean_tags(tags: list[str]) -> list[str]:
     out: list[str] = []
     for tag in tags:
         t = re.sub(r"[^A-Za-z0-9 \-']", " ", tag)
-        t = re.sub(r"\s+", " ", t).strip()[:TAG_MAX_LEN].strip()
+        t = re.sub(r"\s+", " ", t).strip()
+        if len(t) > TAG_MAX_LEN:  # cut at a whole word
+            t = t[:TAG_MAX_LEN + 1].rsplit(" ", 1)[0].strip() or t[:TAG_MAX_LEN]
         if t and t.lower() not in {x.lower() for x in out}:
             out.append(t)
         if len(out) == TAG_MAX:
@@ -95,17 +99,25 @@ def clean_tags(tags: list[str]) -> list[str]:
     return out
 
 
-def listing_body(item: Item, cfg: Config, taxonomy_id: int) -> dict:
+def listing_description(item: Item, measures: dict[str, str] | None = None) -> str:
+    text = plain_text(item.description_html) or item.title
+    card = card_for(item.title, item.tags)
+    block = measurements_block(card, measures or {}) if card else ""
+    return words.clean(text + ("\n\n" + block if block else ""))
+
+
+def listing_body(item: Item, cfg: Config, taxonomy_id: int,
+                 measures: dict[str, str] | None = None) -> dict:
     body = {
         "quantity": max(item.quantity, 1),
-        "title": clean_title(item.title),
-        "description": plain_text(item.description_html) or item.title,
+        "title": clean_title(words.clean(item.title)),
+        "description": listing_description(item, measures),
         "price": round(item.price, 2),
         "who_made": "someone_else",   # vintage: made by someone else
         "when_made": "before_2007",   # Etsy vintage = 20+ years old
         "taxonomy_id": taxonomy_id,
         "type": "physical",
-        "tags": ",".join(clean_tags(item.tags)),  # Etsy wants one comma list
+        "tags": ",".join(clean_tags([words.clean(t) for t in item.tags])),  # Etsy wants one comma list
         "should_auto_renew": False,
     }
     if cfg.etsy_readiness_state_id:
@@ -166,6 +178,10 @@ class Etsy:
         # If the shared secret is not in our settings, the network secret
         # adds the x-api-key header for us.
         headers = {"x-api-key": self.api_key()} if self.cfg.etsy_shared_secret else {}
+        if method in ("POST", "PATCH", "PUT") and isinstance(kw.get("data"), dict):
+            d = kw["data"]
+            words.check(str(d.get("title", "")), str(d.get("description", "")),
+                        str(d.get("tags", "")))
         if auth:
             headers["Authorization"] = f"Bearer {self.user_token()}"
         r = self.http.request(method, API + path, headers=headers, timeout=60, **kw)
