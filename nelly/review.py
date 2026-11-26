@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
 REJECT_REASONS = [
+    "No digital weight",
     "Retake photos",
     "Needs research (brand, age, value)",
     "Price is off",
@@ -67,3 +68,11 @@ def sites_for(title: str, description: str, vintage: bool, ebay_ready: bool) -> 
     if vintage:
         sites.append("etsy")
     return sites + ["shopify"]
+
+
+def ready_for_review(weight_from_scale_photo: float | None) -> tuple[bool, str]:
+    """Diane's rule (11/26/2026): no digital scale weight means it can't be
+    approved. It goes back to Max for a scale photo."""
+    if not weight_from_scale_photo:
+        return False, "No digital weight"
+    return True, ""
