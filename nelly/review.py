@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
 REJECT_REASONS = [
+    "Missing measurements",
     "No digital weight",
     "Retake photos",
     "Needs research (brand, age, value)",
@@ -76,3 +77,15 @@ def ready_for_review(weight_from_scale_photo: float | None) -> tuple[bool, str]:
     if not weight_from_scale_photo:
         return False, "No digital weight"
     return True, ""
+
+
+def missing_measurements(card: dict, measured: dict[str, str]) -> list[str]:
+    """Diane's rule (11/26/2026): every measurement on the card must be in the
+    listing, or it goes back to Max to finish the measuring. Letters the card
+    marks as only for some items, like "(cuffs only)", are skipped."""
+    out = []
+    for letter, label in card["measurements"].items():
+        optional = any(w in label.lower() for w in (" only)", "(if ", "(curtains)"))
+        if not optional and not measured.get(letter):
+            out.append(f"{letter} {label}")
+    return out

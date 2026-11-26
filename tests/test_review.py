@@ -21,3 +21,10 @@ def test_reject_needs_reason():
 def test_sites():
     assert sites_for("Vintage Avon", "", vintage=True, ebay_ready=False) == ["etsy", "shopify"]
     assert sites_for("New tie", "", vintage=False, ebay_ready=True) == ["ebay", "shopify"]
+
+
+def test_missing_measurements():
+    from nelly.cards import BY_ID
+    from nelly.review import missing_measurements
+    assert missing_measurements(BY_ID["J-03"], {"A": "8 in", "B": "1.2 in"}) == ["C Thickness"]
+    assert missing_measurements(BY_ID["J-04"], {"A": "1", "B": "1", "C": "1"}) == []  # D cuffs only
