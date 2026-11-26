@@ -203,21 +203,39 @@ class Etsy:
                 return r["readiness_state_id"]
         raise EtsyError("No 'ready to ship' processing time set up in the Etsy shop.")
 
-    def save_draft(self, item: Item, taxonomy_id: int) -> dict:
-        """Make a draft listing and add up to 10 photos. Not live."""
+    def save_draft(self, item: Item, taxonomy_id: int,
+                   measures: dict[str, str] | None = None) -> dict:
+        """Make a draft listing, its photos, and the measurement card picture.
+        Not live."""
         shop = self.shop_id()
-        body = listing_body(item, self.cfg, taxonomy_id)
+        body = listing_body(item, self.cfg, taxonomy_id, measures)
         body.setdefault("readiness_state_id", self.ready_to_ship_id())
         listing = self._call("POST", f"/shops/{shop}/listings", data=body)
         lid = listing["listing_id"]
         self.set_sku(lid, item.nelly_sku)
-        for rank, url in enumerate(item.image_urls[:10], start=1):
+        card = card_for(item.title, item.tags)
+        photos = item.image_urls[: 9 if card and measures else 10]
+        for rank, url in enumerate(photos, start=1):
             img = self.http.get(url, timeout=60)
             img.raise_for_status()
             self._call("POST", f"/shops/{shop}/listings/{lid}/images",
                        files={"image": (f"{item.nelly_sku}-{rank}.jpg", img.content)},
                        data={"rank": rank})
+        if card and measures:
+            self.add_card_picture(lid, item, card, measures, rank=len(photos) + 1)
         return {"sku": item.nelly_sku, "listingId": lid, "state": listing.get("state")}
+
+    def add_card_picture(self, listing_id: int, item: Item, card: dict,
+                         measures: dict[str, str], rank: int) -> None:
+        """Add the filled-in measurement card as a listing photo."""
+        import tempfile
+        from pathlib import Path
+        from .card_image import make
+        with tempfile.TemporaryDirectory() as tmp:
+            path = make(card, measures, Path(tmp) / f"{item.nelly_sku}-card.jpg")
+            self._call("POST", f"/shops/{self.shop_id()}/listings/{listing_id}/images",
+                       files={"image": (path.name, path.read_bytes())},
+                       data={"rank": rank})
 
     def set_sku(self, listing_id: int, sku: str) -> None:
         """Etsy keeps the SKU on the listing's inventory, not the listing."""
