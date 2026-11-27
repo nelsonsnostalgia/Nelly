@@ -36,3 +36,10 @@ def test_history_resets_clock():
     record(x, T, "id-new")
     assert x.listing_id == "id-new" and pick([x], T)[0] == []
     assert plan([L("e", site="etsy", days=40)], T)[0]["do"] == "renew"
+
+
+def test_relist_marks_down():
+    r = plan([L("a", price=29.99, cost=1)], T)[0]
+    assert r["new_price"] == 27.98 and not r["decide"]
+    r = plan([L("b", price=19.94, cost=1)], T)[0]
+    assert r["new_price"] == 19.94 and r["decide"]
