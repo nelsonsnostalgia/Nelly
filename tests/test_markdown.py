@@ -7,17 +7,23 @@ def test_start_and_count():
     assert times_marked("29.99") == 0 and times_marked("27.97") == 2 and times_marked("30.00") == 0
 
 
-def test_steps_down_one_cent_each_time():
+def test_steps_down_to_half_off():
     p, seen = D("29.99"), []
-    for _ in range(5):
-        p, _why = next_price(p, cost=1)
-        seen.append(p)
-    assert seen == [D("27.98"), D("25.97"), D("23.96"), D("21.95"), D("19.94")]
-    assert next_price(p, cost=1)[0] is None          # stops after 5
+    while True:
+        new, _ = next_price(p, cost=1, original="29.99")
+        if new is None:
+            break
+        seen.append(new)
+        p = new
+    assert seen[:3] == [D("27.98"), D("25.97"), D("23.96")]
+    assert p >= D("15.00") and p < D("17.00")           # stops near 50% off
 
 
-def test_at_least_5_percent_and_floor():
-    new, _ = next_price("9.99", cost=1)
-    assert new == D("8.98")                           # cheap item: about 10%
-    assert next_price("5.99", cost=1)[0] is None      # $5 floor
-    assert next_price("49.99", cost=24)[0] is None    # 2x cost = $48 floor
+def test_dot_00_never_marked_down():
+    new, why = next_price("45.00", cost=1)
+    assert new is None and ".00" in why
+
+
+def test_never_below_cost():
+    assert next_price("9.99", cost=1)[0] == D("8.98")
+    assert next_price("9.99", cost=9.5)[0] is None

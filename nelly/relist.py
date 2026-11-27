@@ -18,7 +18,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import date
 
-from .markdown import SEASON_STEP, next_price
+from .markdown import SEASON_STEP, next_price, no_markdown
 from .seasons import in_season, last_end, window
 
 DAILY_LIMIT = 10
@@ -45,6 +45,7 @@ class Live:
     open_chats: int = 0           # unanswered messages or open offers
     protected: bool = False       # Diane/Eric tapped "Protect"
     cost: float | None = None     # what we paid (for the markdown floor)
+    original: float | None = None # first price, for the 50%-off limit
     season: str | None = None     # Christmas, Halloween ... (None = everyday item)
     season_marked: date | None = None  # last after-season markdown
     refreshes: list[tuple[date, str, str]] = field(default_factory=list)  # (day, old id, new id)
@@ -98,11 +99,11 @@ def plan(listings, today, limit=DAILY_LIMIT, **kw) -> list[dict]:
         if x.season:                               # seasonal: full price, never marked down
             new, why = None, f"{x.season} item, kept at full price"
         else:
-            new, why = next_price(x.price, x.cost)   # about 5% off with each relist
+            new, why = next_price(x.price, x.cost, original=x.original)   # about 5% off with each relist
         rows.append({"sku": x.sku, "site": x.site, "do": METHOD[x.site], "fee": COST.get(x.site, 0.0),
                      "age_days": (today - x.last_fresh).days, "title": x.title,
                      "new_price": float(new) if new else x.price, "price_note": why,
-                     "decide": new is None and not x.season})   # hit the floor/limit -> goes on Eric's decide list
+                     "decide": new is None and not x.season and not no_markdown(x.price)})   # hit the floor/limit -> goes on Eric's decide list
     rows += [{"sku": x.sku, "site": x.site, "do": "hold", "why": why, "title": x.title}
              for x, why in held]
     return rows
@@ -124,8 +125,9 @@ def season_markdowns(listings: list[Live], today: date) -> list[dict]:
         end = last_end(x.season, today)
         if not end or x.listed_on > end or (x.season_marked and x.season_marked > end):
             continue
-        new, why = next_price(x.price, x.cost, step=SEASON_STEP)
+        new, why = next_price(x.price, x.cost, step=SEASON_STEP, original=x.original)
         rows.append({"sku": x.sku, "site": x.site, "title": x.title, "do": "price_change",
                      "new_price": float(new) if new else x.price,
-                     "price_note": f"After {x.season}: " + why, "decide": new is None})
+                     "price_note": f"After {x.season}: " + why,
+                     "decide": new is None and not no_markdown(x.price)})
     return rows

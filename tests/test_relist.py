@@ -41,5 +41,7 @@ def test_history_resets_clock():
 def test_relist_marks_down():
     r = plan([L("a", price=29.99, cost=1)], T)[0]
     assert r["new_price"] == 27.98 and not r["decide"]
-    r = plan([L("b", price=19.94, cost=1)], T)[0]
-    assert r["new_price"] == 19.94 and r["decide"]
+    r = plan([L("b", price=15.88, cost=1, original=29.99)], T)[0]
+    assert r["new_price"] == 15.88 and r["decide"]          # 50% off limit
+    r = plan([L("c", price=45.00, cost=1)], T)[0]
+    assert r["new_price"] == 45.00 and not r["decide"]      # Eric's .00 = no markdown
