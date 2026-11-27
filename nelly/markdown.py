@@ -18,6 +18,7 @@ import math
 from decimal import Decimal
 
 STEP = 0.05
+SEASON_STEP = 0.20   # seasonal items: one 20% markdown right after their season ends
 MAX_MARKDOWNS = 5
 FLOOR_X = 2.0          # never below 2x cost
 FLOOR_MIN = 5.00       # never below $5
@@ -42,13 +43,13 @@ def floor_price(cost) -> Decimal:
     return _d(max(float(cost or 0) * FLOOR_X, FLOOR_MIN))
 
 
-def next_price(price, cost=None) -> tuple[Decimal | None, str]:
+def next_price(price, cost=None, step: float = STEP) -> tuple[Decimal | None, str]:
     """Price after one more markdown, or (None, why) when it should not go lower."""
     n = times_marked(price)
     if n >= MAX_MARKDOWNS:
         return None, f"Already marked down {n} times"
     cents = (98 - n) / 100
-    target = float(price) * (1 - STEP)
+    target = float(price) * (1 - step)
     new = math.floor(target - cents) + cents
     if new >= float(price):
         new -= 1

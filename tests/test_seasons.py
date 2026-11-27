@@ -32,3 +32,15 @@ def test_pushed_first_when_season_opens_no_markdown():
     assert [g.sku for g in go] == ["x", "old"]
     row = plan([xmas], today)[0]
     assert row["new_price"] == 39.99 and not row["decide"]
+
+
+def test_after_season_markdown_once():
+    from nelly.relist import season_markdowns
+    x = item(date(2026, 11, 1), price=39.99)
+    assert season_markdowns([x], date(2026, 12, 10)) == []          # still in season
+    r = season_markdowns([x], date(2026, 12, 21))[0]
+    assert r["new_price"] == 31.98                                    # 20% off, cents .98
+    x.price, x.season_marked = 31.98, date(2026, 12, 21)
+    assert season_markdowns([x], date(2027, 6, 1)) == []              # holds all year
+    late = item(date(2027, 1, 5))                                     # listed after Christmas
+    assert season_markdowns([late], date(2027, 6, 1)) == []

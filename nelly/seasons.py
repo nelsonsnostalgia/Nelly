@@ -7,6 +7,8 @@ Each season has a SELLING WINDOW (when buyers shop for it, which starts well bef
 - Outside the window: no relist, no markdown. Item stays listed at full price.
 - Window opens: relist fresh at full price, first in line ahead of the daily 10.
 - Inside the window: normal relist timing, but NO markdowns.
+- Season ends and it didn't sell (Diane 11/27): ONE markdown of 20% (same penny code),
+  then it holds that price all year until the next season ends.
 """
 from __future__ import annotations
 
@@ -52,3 +54,14 @@ def window(name: str, today: date) -> tuple[date, date]:
 def in_season(name: str, today: date) -> bool:
     start, end = window(name, today)
     return start <= today <= end
+
+
+def last_end(name: str, today: date) -> date | None:
+    """End date of the most recent selling window that finished before today."""
+    sm, sd, em, ed, _ = SEASONS[name]
+    ends = []
+    for y in (today.year - 1, today.year):
+        end = date(y + (1 if (em, ed) < (sm, sd) else 0), em, ed)
+        if end < today:
+            ends.append(end)
+    return max(ends) if ends else None

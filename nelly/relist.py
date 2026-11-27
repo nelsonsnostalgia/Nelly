@@ -18,8 +18,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import date
 
-from .markdown import next_price
-from .seasons import in_season, window
+from .markdown import SEASON_STEP, next_price
+from .seasons import in_season, last_end, window
 
 DAILY_LIMIT = 10
 
@@ -46,6 +46,7 @@ class Live:
     protected: bool = False       # Diane/Eric tapped "Protect"
     cost: float | None = None     # what we paid (for the markdown floor)
     season: str | None = None     # Christmas, Halloween ... (None = everyday item)
+    season_marked: date | None = None  # last after-season markdown
     refreshes: list[tuple[date, str, str]] = field(default_factory=list)  # (day, old id, new id)
 
     @property
@@ -111,3 +112,20 @@ def record(x: Live, today: date, new_id: str) -> None:
     """Keep the relist history on the item."""
     x.refreshes.append((today, x.listing_id, new_id))
     x.listing_id = new_id
+
+
+def season_markdowns(listings: list[Live], today: date) -> list[dict]:
+    """Seasonal items still unsold after their season: one 20% markdown, once per season.
+    Items first listed after the season ended are left at full price until the next one ends."""
+    rows = []
+    for x in listings:
+        if not x.season or in_season(x.season, today):
+            continue
+        end = last_end(x.season, today)
+        if not end or x.listed_on > end or (x.season_marked and x.season_marked > end):
+            continue
+        new, why = next_price(x.price, x.cost, step=SEASON_STEP)
+        rows.append({"sku": x.sku, "site": x.site, "title": x.title, "do": "price_change",
+                     "new_price": float(new) if new else x.price,
+                     "price_note": f"After {x.season}: " + why, "decide": new is None})
+    return rows
