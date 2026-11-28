@@ -15,6 +15,7 @@ REJECT_REASONS = [
     "Needs research (brand, age, value)",
     "Price is off",
     "Wrong card or measurements",
+    "Book photos missing (author page, last page)",
     "Other",
 ]
 
@@ -89,3 +90,15 @@ def missing_measurements(card: dict, measured: dict[str, str]) -> list[str]:
         if not optional and not measured.get(letter):
             out.append(f"{letter} {label}")
     return out
+
+
+BOOK_PHOTOS = {"author page": "Author page", "last page": "Last page (page count)"}
+
+
+def missing_book_photos(card_id: str | None, photo_kinds: list[str]) -> list[str]:
+    """Diane's rule (11/28/2026): every book needs a photo of the author page and
+    the last page (for the page count). Missing either = back to Max."""
+    if card_id != "M-01":
+        return []
+    have = {k.lower() for k in photo_kinds}
+    return [label for kind, label in BOOK_PHOTOS.items() if kind not in have]

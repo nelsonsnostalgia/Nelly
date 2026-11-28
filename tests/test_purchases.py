@@ -15,3 +15,12 @@ def test_costs():
     assert c == {"a": D("30.00"), "b": D("10.00")}
     p.total = None
     assert piece_costs(p, [{"sku": "a", "price": 30}]) == {"a": D("1.0")}
+
+
+def test_mileage():
+    from nelly.purchases import mileage_log
+    a = Purchase("BUY-1128-1", "2026-11-28", "Smith estate", D("40"), miles=36, driver="Eric")
+    b = Purchase("BUY-1129-1", "2026-11-29", "Neil's pickup", None, miles=20)
+    assert a.mileage_cost() == D("26.10")
+    rows, dollars, miles = mileage_log([b, a], 2026)
+    assert miles == 56 and dollars == D("40.60") and rows[0]["place"] == "Smith estate"

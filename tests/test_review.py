@@ -28,3 +28,10 @@ def test_missing_measurements():
     from nelly.review import missing_measurements
     assert missing_measurements(BY_ID["J-03"], {"A": "8 in", "B": "1.2 in"}) == ["C Thickness"]
     assert missing_measurements(BY_ID["J-04"], {"A": "1", "B": "1", "C": "1"}) == []  # D cuffs only
+
+
+def test_book_photos():
+    from nelly.review import missing_book_photos
+    assert missing_book_photos("M-01", ["main", "author page"]) == ["Last page (page count)"]
+    assert missing_book_photos("M-01", ["Author page", "Last page"]) == []
+    assert missing_book_photos("J-03", []) == []
